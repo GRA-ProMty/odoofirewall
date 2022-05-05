@@ -1,0 +1,15 @@
+sale = env["sale.order"].search(['name', '=', self.display_name]) 
+delivery = env["stock.picking"].search('origin', '=', self.display_name)
+invoice = env["account.move"].search('invoice_origin', '=', self.display_name)
+  print(invoice.read())
+    delivery.state = 'draft'
+    sale.state = "draft"
+    invoice.state = "draft"
+    print('delivery', delivery)
+    print('delivery_o',sale)
+  for picking in delivery:
+    for move in picking.move_lines:
+      move.state = 'draft'
+      move._do_unreserve()
+      move.unlink()
+      picking.unlink()
